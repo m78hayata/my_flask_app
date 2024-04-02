@@ -130,11 +130,13 @@ def index():
                 career = form_data[f'career{index}']
                 people.append(Person(name, gender, department, int(career)))
         
-        # good_pairs と bad_pairs の処理
-        good_pairs_input = form_data['good_pairs'].split(';')
-        good_pairs = [pair.split(',') for pair in good_pairs_input if pair]
-        bad_pairs_input = form_data['bad_pairs'].split(';')
-        bad_pairs = [pair.split(',') for pair in bad_pairs_input if pair]
+        # good_pairs と bad_pairs の入力を解析
+        good_pairs_input = form_data.get('good_pairs', '')
+        good_pairs = [pair.split(',') for pair in good_pairs_input.split(';') if pair]  # 空の場合は空のリストが使用される
+
+        bad_pairs_input = form_data.get('bad_pairs', '')
+        bad_pairs = [pair.split(',') for pair in bad_pairs_input.split(';') if pair]  # 空の場合は空のリストが使用される
+
 
         # テーブル数と各テーブルの容量の処理
         num_tables = int(form_data['num_tables'])
