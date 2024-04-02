@@ -116,25 +116,29 @@ def simulated_annealing(tables, affinity_matrix, people, iterations, initial_tem
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # ユーザー入力から参加者情報を解析
-        people_input = request.form['people'].split(';')
+        # フォームから送信されたデータを全て取得
+        form_data = request.form
+        
+        # 参加者情報の抽出
         people = []
-        for person_info in people_input:
-            name, gender, department, career = person_info.split(',')
-            people.append(Person(name.strip(), gender.strip(), department.strip(), int(career.strip())))
+        for key in form_data.keys():
+            if key.startswith('name'):
+                _, index = key.split('name')
+                name = form_data[f'name{index}']
+                gender = form_data[f'gender{index}']
+                department = form_data[f'department{index}']
+                career = form_data[f'career{index}']
+                people.append(Person(name, gender, department, int(career)))
         
-        # テーブルの設定
-        num_tables = int(request.form['num_tables'])
-        table_capacities = list(map(int, request.form['table_capacities'].split(',')))
-        
-        # good_pairs と bad_pairs の入力を解析
-        good_pairs_input = request.form['good_pairs'].split(';')
+        # good_pairs と bad_pairs の処理
+        good_pairs_input = form_data['good_pairs'].split(';')
         good_pairs = [pair.split(',') for pair in good_pairs_input if pair]
-        good_pairs = [[name.strip() for name in pair] for pair in good_pairs]
-        
-        bad_pairs_input = request.form['bad_pairs'].split(';')
+        bad_pairs_input = form_data['bad_pairs'].split(';')
         bad_pairs = [pair.split(',') for pair in bad_pairs_input if pair]
-        bad_pairs = [[name.strip() for name in pair] for pair in bad_pairs]
+
+        # テーブル数と各テーブルの容量の処理
+        num_tables = int(form_data['num_tables'])
+        table_capacities = list(map(int, form_data['table_capacities'].split(',')))
         
         # ここでテーブル割り当てと最適化を行う
         tables = create_initial_solution(people, num_tables, table_capacities)
