@@ -76,7 +76,7 @@ def calculate_cost(tables, affinity_matrix, people):
                 total_cost += affinity_matrix[people.index(person)][people.index(other_person)]
     return total_cost
 
-def simulated_annealing(tables, affinity_matrix, people, iterations, initial_temp=100.0, cooling_rate=0.99):
+def simulated_annealing(tables, affinity_matrix, people, iterations, initial_temp, cooling_rate):
     current_cost = calculate_cost(tables, affinity_matrix, people)
     best_cost = current_cost
     best_solution = list(tables)  # テーブルの深いコピーを作成
@@ -97,7 +97,7 @@ def simulated_annealing(tables, affinity_matrix, people, iterations, initial_tem
             # 席を交換
             temp_tables[tables.index(person1_table)].seats[person1_index], temp_tables[tables.index(person2_table)].seats[person2_index] = person2, person1
 
-            new_cost = calculate_cost(temp_tables, affinity_matrix)
+            new_cost = calculate_cost(temp_tables, affinity_matrix, people)
             cost_difference = new_cost - current_cost
 
             # コストが低くなるか、あるいは高くなる場合でも一定の確率で変更を受け入れる
