@@ -139,7 +139,7 @@ def index():
         # ここでテーブル割り当てと最適化を行う
         tables = create_initial_solution(people, num_tables, table_capacities)
         affinity_matrix = generate_affinity_matrix(people, good_pairs, bad_pairs)
-        optimized_tables, cost = simulated_annealing(tables, affinity_matrix, people, 200000, 100.0, 0.999)
+        optimized_tables, cost = simulated_annealing(tables, affinity_matrix, people, 50000, 100.0, 0.999)
         
         # 結果をセッションに保存
         session['result'] = [f"Table {i+1}: {[person.name for person in table.seats]}" for i, table in enumerate(optimized_tables)]

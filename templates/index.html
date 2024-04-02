@@ -2,18 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>座席決定アプリ</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .participant-input { margin-bottom: 10px; }
+        label { margin-right: 5px; }
+    </style>
 </head>
 <body>
     <h1>飲み会座席決定アプリ</h1>
-    <form action="/" method="post">
-        <!-- 既存の入力フィールド -->
-        <input type="text" name="people" placeholder="名前,性別,部署,キャリア;..." required>
-        <input type="text" name="num_tables" placeholder="テーブル数" required>
-        <input type="text" name="table_capacities" placeholder="各テーブルの容量(カンマ区切り)" required>
-        <input type="text" name="good_pairs" placeholder="仲の良いペア(例: 名前1,名前2;名前3,名前4)" required>
-        <input type="text" name="bad_pairs" placeholder="仲の悪いペア(例: 名前1,名前2;名前3,名前4)" required>
+    <form id="seatingForm">
+        <div id="participants">
+            <!-- 参加者情報入力欄がここに挿入されます -->
+        </div>
+        <button type="button" onclick="addParticipant()">参加者追加</button><br><br>
+        テーブル数: <input type="number" name="num_tables" required><br><br>
+        各テーブルの容量: <input type="text" name="table_capacities" required><br><br>
         <input type="submit" value="座席決定">
     </form>    
+
+    <script>
+        function addParticipant() {
+            const participantDiv = $('#participants');
+            const newIndex = $('.participant-input').length + 1;
+            participantDiv.append(`
+                <div class="participant-input">
+                    名前: <input type="text" name="name${newIndex}" required>
+                    性別: <select name="gender${newIndex}" required>
+                        <option value="">選択...</option>
+                        <option value="男性">男性</option>
+                        <option value="女性">女性</option>
+                        <option value="その他">その他</option>
+                    </select>
+                    部署: <input type="text" name="department${newIndex}" required>
+                    キャリア: <input type="number" name="career${newIndex}" min="0" required>
+                </div>
+            `);
+        }
+
+        $(document).ready(function() {
+            addParticipant(); // 初期参加者入力欄を追加
+        });
+    </script>
 </body>
 </html>
