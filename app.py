@@ -76,8 +76,8 @@ def calculate_cost(tables, affinity_matrix, people):
                 total_cost += affinity_matrix[people.index(person)][people.index(other_person)]
     return total_cost
 
-def simulated_annealing(tables, affinity_matrix, iterations, initial_temp=100.0, cooling_rate=0.99):
-    current_cost = calculate_cost(tables, affinity_matrix)
+def simulated_annealing(tables, affinity_matrix, people, iterations, initial_temp=100.0, cooling_rate=0.99):
+    current_cost = calculate_cost(tables, affinity_matrix, people)
     best_cost = current_cost
     best_solution = list(tables)  # テーブルの深いコピーを作成
     temp = initial_temp
@@ -139,7 +139,7 @@ def index():
         # ここでテーブル割り当てと最適化を行う
         tables = create_initial_solution(people, num_tables, table_capacities)
         affinity_matrix = generate_affinity_matrix(people, good_pairs, bad_pairs)
-        optimized_tables, cost = simulated_annealing(tables, affinity_matrix, 200000, 100.0, 0.999)
+        optimized_tables, cost = simulated_annealing(tables, affinity_matrix, people, 200000, 100.0, 0.999)
         
         # 結果をセッションに保存
         session['result'] = [f"Table {i+1}: {[person.name for person in table.seats]}" for i, table in enumerate(optimized_tables)]
