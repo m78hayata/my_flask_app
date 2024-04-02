@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sum of Two Numbers</title>
+    <title>座席決定アプリ</title>
 </head>
 <body>
-    <h1>Enter Two Numbers</h1>
+    <h1>飲み会座席決定アプリ</h1>
     <form action="/" method="post">
-        <input type="number" name="num1" required>
-        <input type="number" name="num2" required>
-        <input type="submit" value="Add">
-    </form>
-    {% if result is not none %}
-        <h2>Result: {{ result }}</h2>
-    {% endif %}
+        <!-- 既存の入力フィールド -->
+        <input type="text" name="people" placeholder="名前,性別,部署,キャリア;..." required>
+        <input type="text" name="num_tables" placeholder="テーブル数" required>
+        <input type="text" name="table_capacities" placeholder="各テーブルの容量(カンマ区切り)" required>
+        <input type="text" name="good_pairs" placeholder="仲の良いペア(例: 名前1,名前2;名前3,名前4)" required>
+        <input type="text" name="bad_pairs" placeholder="仲の悪いペア(例: 名前1,名前2;名前3,名前4)" required>
+        <input type="submit" value="座席決定">
+    </form>    
 </body>
 </html>
-

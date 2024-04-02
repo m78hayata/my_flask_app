@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>座席決定結果</title>
+</head>
+<body>
+    <h1>座席決定結果</h1>
+    <!-- 結果表示 -->
+    {% for table in tables %}
+        <h2>Table {{ loop.index }}: {{ table }}</h2>
+    {% endfor %}
+</body>
+</html>
