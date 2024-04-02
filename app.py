@@ -22,8 +22,8 @@ class Table:
         else:
             print("Table is full")
 
-def create_initial_solution(people, num_tables, table_capacity):
-    tables = [Table(table_capacity) for _ in range(num_tables)]
+def create_initial_solution(people, num_tables, table_capacities):
+    tables = [Table(capacity) for capacity in table_capacities]
     random.shuffle(people)
     for person in people:
         for table in tables:
