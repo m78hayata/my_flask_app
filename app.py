@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template, redirect, url_for, session
-import numpy as np
 import random
 
 app = Flask(__name__)
@@ -102,7 +101,7 @@ def simulated_annealing(tables, affinity_matrix, iterations, initial_temp=100.0,
             cost_difference = new_cost - current_cost
 
             # コストが低くなるか、あるいは高くなる場合でも一定の確率で変更を受け入れる
-            if cost_difference < 0 or random.random() < np.exp(-cost_difference / temp):
+            if cost_difference < 0 or random.random() < 2.71828 ** (-cost_difference / temp):
                 tables = temp_tables
                 current_cost = new_cost
                 if new_cost < best_cost:
