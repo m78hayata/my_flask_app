@@ -6,7 +6,7 @@
     <title>座席決定アプリ</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .participant-input { margin-bottom: 10px; }
+        .participant-input, .pair-input { margin-bottom: 10px; }
         label { margin-right: 5px; }
     </style>
 </head>
@@ -17,6 +17,12 @@
             <!-- 参加者情報入力欄がここに挿入されます -->
         </div>
         <button type="button" onclick="addParticipant()">参加者追加</button><br><br>
+
+        <label for="good_pairs">仲の良いペア:</label>
+        <input type="text" id="good_pairs" name="good_pairs" placeholder="名前1,名前2;名前3,名前4" required><br><br>
+        <label for="bad_pairs">仲の悪いペア:</label>
+        <input type="text" id="bad_pairs" name="bad_pairs" placeholder="名前1,名前2;名前3,名前4" required><br><br>
+
         テーブル数: <input type="number" name="num_tables" required><br><br>
         各テーブルの容量: <input type="text" name="table_capacities" required><br><br>
         <input type="submit" value="座席決定">
