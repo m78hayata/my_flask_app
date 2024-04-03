@@ -4,40 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>座席決定アプリ</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .participant-input, .pair-input { margin-bottom: 10px; }
-        label { margin-right: 5px; }
+        .container { margin-top: 20px; }
     </style>
 </head>
 <body>
-    <h1>飲み会座席決定アプリ</h1>
-    <form id="seatingForm" method="POST">
-        <div id="participants">
-            <!-- 参加者情報入力欄がここに挿入されます -->
-        </div>
-        <button type="button" onclick="addParticipant()">参加者追加</button><br><br>
+    <div class="container">
+        <h1 class="mb-4">飲み会座席決定アプリ</h1>
+        <form id="seatingForm" method="POST">
+            <div id="participants" class="mb-3">
+                <!-- 参加者情報入力欄がここに挿入されます -->
+            </div>
+            <button type="button" class="btn btn-primary mb-3" onclick="addParticipant()">参加者追加</button>
 
-        <div id="goodPairs">
-            <h3>仲の良いペア</h3>
-            <!-- 仲の良いペアの入力フィールドがここに挿入されます -->
-        </div>
-        <button type="button" id="addGoodPair">仲の良いペア追加</button><br><br>
-        
-        <div id="badPairs">
-            <h3>仲の悪いペア</h3>
-            <!-- 仲の悪いペアの入力フィールドがここに挿入されます -->
-        </div>
-        <button type="button" id="addBadPair">仲の悪いペア追加</button><br><br>
+            <div id="goodPairs" class="mb-3">
+                <h3>仲の良いペア</h3>
+                <!-- 仲の良いペアの入力フィールドがここに挿入されます -->
+            </div>
+            <button type="button" class="btn btn-info mb-3" id="addGoodPair">仲の良いペア追加</button>
+            
+            <div id="badPairs" class="mb-3">
+                <h3>仲の悪いペア</h3>
+                <!-- 仲の悪いペアの入力フィールドがここに挿入されます -->
+            </div>
+            <button type="button" class="btn btn-info mb-3" id="addBadPair">仲の悪いペア追加</button>
 
-        テーブル数: <input type="number" name="num_tables" required><br><br>
-        各テーブルの席数: <input type="text" name="table_capacities" required><br><br>
-        <input type="submit" value="座席決定">
-        <button type="button" id="clearResultButton">結果削除</button><br><br>
-    </form>
+            <div class="mb-3">
+                <label>テーブル数:</label>
+                <input type="number" name="num_tables" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>各テーブルの席数:</label>
+                <input type="text" name="table_capacities" class="form-control" required>
+            </div>
+            <input type="submit" class="btn btn-success" value="座席決定">
+            <button type="button" class="btn btn-danger" id="clearResultButton" style="display:none;">結果削除</button>
+        </form>
 
-    <div id="result">
-        <!-- 計算結果がここに表示されます -->
+        <div id="result" class="mt-3">
+            <!-- 計算結果がここに表示されます -->
+        </div>
     </div>
 
     <script>
