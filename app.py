@@ -160,6 +160,7 @@ def submit():
     for i, table in enumerate(optimized_tables, start=1):
         names = ', '.join([person.name for person in table.seats])
         result_html += f"<div>Table {i}: {names}</div>"
+    result_html += f"<div>Cost : {cost}</div>"
 
     return result_html
 
