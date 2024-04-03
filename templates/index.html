@@ -50,7 +50,25 @@
 
         $(document).ready(function() {
             addParticipant(); // 初期参加者入力欄を追加
+
+            // フォームのsubmitイベントを捕捉
+            $("#seatingForm").submit(function(event) {
+                event.preventDefault(); // フォームのデフォルトの送信を防止
+
+                $.ajax({
+                    type: "POST",
+                    url: "/submit", // バックエンドのエンドポイント
+                    data: $(this).serialize(), // フォームのデータをシリアライズ
+                    success: function(response) {
+                        // 応答をページに表示
+                        $("#result").html(response); // 結果を表示する要素のIDを"result"と仮定
+                    }
+                });
+            });
         });
     </script>
+    <div id="result">
+        <!-- 計算結果がここに表示されます -->
+    </div>
 </body>
 </html>

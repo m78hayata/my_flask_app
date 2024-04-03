@@ -113,51 +113,44 @@ def simulated_annealing(tables, affinity_matrix, people, iterations, initial_tem
 
     return best_solution, best_cost
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
-    if request.method == 'POST':
-        # フォームから送信されたデータを全て取得
-        form_data = request.form
-        
-        # 参加者情報の抽出
-        people = []
-        for key in form_data.keys():
-            if key.startswith('name'):
-                _, index = key.split('name')
-                name = form_data[f'name{index}']
-                gender = form_data[f'gender{index}']
-                department = form_data[f'department{index}']
-                career = form_data[f'career{index}']
-                people.append(Person(name, gender, department, int(career)))
-        
-        # good_pairs と bad_pairs の入力を解析
-        good_pairs_input = form_data.get('good_pairs', '')
-        good_pairs = [pair.split(',') for pair in good_pairs_input.split(';') if pair]  # 空の場合は空のリストが使用される
-
-        bad_pairs_input = form_data.get('bad_pairs', '')
-        bad_pairs = [pair.split(',') for pair in bad_pairs_input.split(';') if pair]  # 空の場合は空のリストが使用される
-
-
-        # テーブル数と各テーブルの容量の処理
-        num_tables = int(form_data['num_tables'])
-        table_capacities = list(map(int, form_data['table_capacities'].split(',')))
-        
-        # ここでテーブル割り当てと最適化を行う
-        tables = create_initial_solution(people, num_tables, table_capacities)
-        affinity_matrix = generate_affinity_matrix(people, good_pairs, bad_pairs)
-        optimized_tables, cost = simulated_annealing(tables, affinity_matrix, people, 50000, 100.0, 0.999)
-        
-        # 結果をセッションに保存
-        session['result'] = [f"Table {i+1}: {[person.name for person in table.seats]}" for i, table in enumerate(optimized_tables)]
-        
-        return redirect(url_for('result'))
     return render_template('index.html')
 
-@app.route('/result')
-def result():
-    # セッションから結果を取得
-    result = session.get('result', [])
-    return render_template('result.html', tables=result)
+@app.route('/submit', methods=['POST'])
+def submit():
+    # フォームデータの処理
+    form_data = request.form
+    people = []
+    for key in form_data.keys():
+        if key.startswith('name'):
+            index = key[len('name'):]
+            name = form_data.get(f'name{index}')
+            gender = form_data.get(f'gender{index}')
+            department = form_data.get(f'department{index}')
+            career = form_data.get(f'career{index}', '0')
+            if name and gender and department and career.isdigit():
+                people.append(Person(name, gender, department, int(career)))
+
+    good_pairs_input = form_data.get('good_pairs', '')
+    good_pairs = [pair.split(',') for pair in good_pairs_input.split(';') if pair]
+
+    bad_pairs_input = form_data.get('bad_pairs', '')
+    bad_pairs = [pair.split(',') for pair in bad_pairs_input.split(';') if pair]
+
+    num_tables = int(form_data.get('num_tables', '0'))
+    table_capacities = [int(x) for x in form_data.get('table_capacities', '').split(',') if x.isdigit()]
+
+    tables = create_initial_solution(people, num_tables, table_capacities)
+    affinity_matrix = generate_affinity_matrix(people, good_pairs, bad_pairs)
+    optimized_tables, cost = simulated_annealing(tables, affinity_matrix, people, 50000, 100.0, 0.999)
+
+    result_html = ""
+    for i, table in enumerate(optimized_tables, start=1):
+        names = ', '.join([person.name for person in table.seats])
+        result_html += f"<div>Table {i}: {names}</div>"
+
+    return result_html
 
 if __name__ == '__main__':
     app.run(debug=True)
