@@ -154,7 +154,7 @@ def submit():
 
     tables = create_initial_solution(people, num_tables, table_capacities)
     affinity_matrix = generate_affinity_matrix(people, bad_pairs, good_pairs)
-    optimized_tables, cost = simulated_annealing(tables, affinity_matrix, people, 50000, 100.0, 0.999)
+    optimized_tables, cost = simulated_annealing(tables, affinity_matrix, people, 100000, 100.0, 0.999)
 
     result_html = ""
     for i, table in enumerate(optimized_tables, start=1):
