@@ -49,28 +49,35 @@
         }
 
         $(document).ready(function() {
-            addParticipant(); // 初期参加者入力欄を追加
+        addParticipant(); // 初期参加者入力欄を追加の関数
 
-            // フォームのsubmitイベントを捕捉
-            $("#seatingForm").submit(function(event) {
-                event.preventDefault(); // フォームのデフォルトの送信を防止
+        $("#seatingForm").submit(function(event) {
+            event.preventDefault(); // フォームのデフォルトの送信を防止
 
-                $.ajax({
-                    type: "POST",
-                    url: "/submit", // バックエンドのエンドポイント
-                    data: $(this).serialize(), // フォームのデータをシリアライズ
-                    success: function(response) {
-                        // 応答をページに表示
-                        $("#result").html(response); // 結果を表示する要素のIDを"result"と仮定
-                    }
-                });
-
-            // 「削除」ボタンのクリックイベントリスナーを設定
-            $("#clearResult").click(function() {
-                $("#result").empty(); // 結果表示エリアをクリア
-            });
+            $.ajax({
+                type: "POST",
+                url: "/submit", // バックエンドのエンドポイント
+                data: $(this).serialize(), // フォームのデータをシリアライズ
+                beforeSend: function() {
+                    // リクエストを送信する直前に「計算中」というメッセージを表示
+                    $("#result").html("<div>計算中...</div>");
+                },
+                success: function(response) {
+                    // 応答をページに表示
+                    $("#result").html(response); // 結果を表示する要素のIDを"result"と仮定
+                },
+                error: function() {
+                    // エラーが発生した場合の処理
+                    $("#result").html("<div>エラーが発生しました。もう一度試してください。</div>");
+                }
             });
         });
+
+        // 「削除」ボタンのクリックイベントリスナーを設定（前のステップで実装）
+        $("#clearResult").click(function() {
+            $("#result").empty(); // 結果表示エリアをクリア
+        });
+    });
     </script>
     <div id="result">
         <!-- 計算結果がここに表示されます -->
