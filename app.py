@@ -132,11 +132,22 @@ def submit():
             if name and gender and department and career.isdigit():
                 people.append(Person(name, gender, department, int(career)))
 
-    good_pairs_input = form_data.get('good_pairs', '')
-    good_pairs = [pair.split(',') for pair in good_pairs_input.split(';') if pair]
+    good_pairs = []
+    bad_pairs = []
 
-    bad_pairs_input = form_data.get('bad_pairs', '')
-    bad_pairs = [pair.split(',') for pair in bad_pairs_input.split(';') if pair]
+    for key, value in request.form.items():
+        if key.startswith("goodName"):
+            _, _, pair_index = key.partition("_")
+            name1 = request.form.get(f"goodName1_{pair_index}")
+            name2 = request.form.get(f"goodName2_{pair_index}")
+            if name1 and name2:
+                good_pairs.append([name1, name2])
+        elif key.startswith("badName"):
+            _, _, pair_index = key.partition("_")
+            name1 = request.form.get(f"badName1_{pair_index}")
+            name2 = request.form.get(f"badName2_{pair_index}")
+            if name1 and name2:
+                bad_pairs.append([name1, name2])
 
     num_tables = int(form_data.get('num_tables', '0'))
     table_capacities = [int(x) for x in form_data.get('table_capacities', '').split(',') if x.isdigit()]
