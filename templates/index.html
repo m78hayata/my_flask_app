@@ -64,6 +64,11 @@
                         $("#result").html(response); // 結果を表示する要素のIDを"result"と仮定
                     }
                 });
+
+            // 「削除」ボタンのクリックイベントリスナーを設定
+            $("#clearResult").click(function() {
+                $("#result").empty(); // 結果表示エリアをクリア
+            });
             });
         });
     </script>
