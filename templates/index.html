@@ -82,31 +82,42 @@
                 addPair("badPairs", "bad");
             });
 
-            $("#seatingForm").submit(function(event) {
-            event.preventDefault(); // フォームのデフォルトの送信を防止
+            // 「結果削除」ボタンを最初は非表示にする
+            $("#clearResultButton").hide();
 
-            $.ajax({
-                type: "POST",
-                url: "/submit", // バックエンドのエンドポイント
-                data: $(this).serialize(), // フォームのデータをシリアライズ
-                beforeSend: function() {
-                    // リクエストを送信する直前に「計算中」というメッセージを表示
-                    $("#result").html("<div>計算中...</div>");
-                },
-                success: function(response) {
-                    // 応答をページに表示
-                    $("#result").html(response); // 結果を表示する要素のIDを"result"と仮定
-                },
-                error: function() {
-                    // エラーが発生した場合の処理
-                    $("#result").html("<div>エラーが発生しました。もう一度試してください。</div>");
-                }
+            $("#seatingForm").submit(function(event) {
+                event.preventDefault(); // フォームのデフォルトの送信を防止
+
+                $.ajax({
+                    type: "POST",
+                    url: "/submit", // バックエンドのエンドポイント
+                    data: $(this).serialize(), // フォームのデータをシリアライズ
+                    beforeSend: function() {
+                        // リクエストを送信する直前に「計算中」というメッセージを表示
+                        $("#result").html("<div>計算中...</div>");
+                        // 「結果削除」ボタンを非表示にする
+                        $("#clearResultButton").hide();
+                    },
+                    success: function(response) {
+                        // 応答をページに表示
+                        $("#result").html(response); // 結果を表示
+                        // 結果が表示されたら「結果削除」ボタンも表示する
+                        $("#clearResultButton").show();
+                    },
+                    error: function() {
+                        // エラーが発生した場合の処理
+                        $("#result").html("<div>エラーが発生しました。もう一度試してください。</div>");
+                        // エラー時もボタンを表示
+                        $("#clearResultButton").show();
+                    }
+                });
             });
-        });
 
             // 「結果削除」ボタンのクリックイベントリスナーを設定
             $("#clearResultButton").click(function() {
                 $("#result").empty(); // 結果表示エリアをクリア
+                // 結果を削除したらボタンを非表示にする
+                $(this).hide();
             });
         });
     </script>

@@ -153,7 +153,7 @@ def submit():
     table_capacities = [int(x) for x in form_data.get('table_capacities', '').split(',') if x.isdigit()]
 
     tables = create_initial_solution(people, num_tables, table_capacities)
-    affinity_matrix = generate_affinity_matrix(people, good_pairs, bad_pairs)
+    affinity_matrix = generate_affinity_matrix(people, bad_pairs, good_pairs)
     optimized_tables, cost = simulated_annealing(tables, affinity_matrix, people, 50000, 100.0, 0.999)
 
     result_html = ""
